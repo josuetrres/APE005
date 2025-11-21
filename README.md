@@ -7,14 +7,14 @@ Tabla de Resultados de Peticiones HTTP
 
 | Método | URL                                                         | Código de Estado     | Tiempo de Respuesta                 | Observaciones CORS                                |
 | ------ | ----------------------------------------------------------- | -------------------- | ----------------------------------- | ------------------------------------------------- |
-| GET    | `https://jsonplaceholder.typicode.com/posts/1`              | **200 OK**           | Visible en Network (primer request) | CORS permitido (`Access-Control-Allow-Origin: *`) |
-| GET    | `https://jsonplaceholder.typicode.com/posts/1` *(repetido)* | **304 Not Modified** | Menor tiempo (desde caché)          | Respuesta servida desde caché, CORS permitido     |
-| GET    | `https://jsonplaceholder.typicode.com/posts/999999`         | **404 Not Found**    | Visible en Network                  | CORS permitido, pero el recurso no existe         |
+| GET    | `https://jsonplaceholder.typicode.com/posts/1`              | **200 OK**           | Visible en Network (primer request) | access-control-allow-origin: null (archivo local) | 
+| GET    | `https://jsonplaceholder.typicode.com/posts/1` *(repetido)* | **304 Not Modified** | Menor tiempo (desde caché)          | access-control-allow-origin: null (archivo local) |
+| GET    | `https://jsonplaceholder.typicode.com/posts/999999`         | **404 Not Found**    | Visible en Network                  | access-control-allow-origin: null (archivo local) |
 
 304 aparece cuando el navegador usa la copia de caché y no descarga de nuevo el recurso.
-
 404 indica que el recurso solicitado no existe, aunque CORS sí lo permita.
 
-JSONPlaceholder permite CORS para métodos GET y POST.
-
-El encabezado strict-origin-when-cross-origin indica una política de referencia segura entre sitios.
+Observación CORS:
+En algunas peticiones desde archivos locales (file://), el servidor responde con: 
+access-control-allow-origin: null
+Esto ocurre porque el navegador envía el origen como null y la respuesta no está permitida explícitamente. No es un error de código, es el comportamiento esperado al ejecutar peticiones desde archivos locales sin servidor.
